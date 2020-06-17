@@ -737,11 +737,40 @@ class dynamicIBP(object):
 
 
 if __name__ == "__main__":
+    # Bird Data
     bird_data = loadmat('../data/bird_sounds.mat')
     X = bird_data['XX']
     mask = bird_data['Xmask']
     filename = "../output/bird_sounds_dIBP"+str(0)+".p"        
     dibp= dynamicIBP(data=X, lmbda = 0.5, initial_K=20,isIBP = False,
-                     mask = mask, B_prior="normal", collapsed=True, 
+                     mask = mask, B_prior="normal", collapsed=False, 
+                     filename=filename)
+    dibp.sample(iters=1000)        
+
+    # 2001 bin
+    bin2001 = loadmat('../data/2001_bin.mat')
+    X = bin2001['XX']   
+    mask = bin2001['Xmask']  
+    filename = "../output/bird_sounds_dIBP"+str(0)+".p"        
+    dibp= dynamicIBP(data=X, lmbda = 0.5, initial_K=20,isIBP = False,
+                     mask = mask, B_prior="flat", collapsed=True, 
+                     filename=filename)
+    dibp.sample(iters=1000)        
+
+    # synthetic
+    synthetic = loadmat('../data/synthetic_data.mat')
+    X = synthetic['X']
+    mask = synthetic['mask']    
+    dibp= dynamicIBP(data=X, lmbda = 0.5, initial_K=20,isIBP = False,
+                     mask = mask, B_prior="flat", collapsed=True, 
+                     filename=filename)
+    dibp.sample(iters=1000)        
+
+    # hpc
+    hpc =loadmat('../data/hpc_quasi_whitened.mat')
+    X = hpc['XX']
+    mask = hpc['Xmask']
+    dibp= dynamicIBP(data=X, lmbda = 0.5, initial_K=20,isIBP = False,
+                     mask = mask, B_prior="flat", collapsed=True, 
                      filename=filename)
     dibp.sample(iters=1000)        
